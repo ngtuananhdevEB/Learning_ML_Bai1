@@ -1,3 +1,4 @@
+import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import scaler
@@ -6,6 +7,7 @@ from seaborn import scatterplot
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from math import sqrt
+from sklearn.metrics import classification_report, confusion_matrix
 from sklearn.svm import SVC
 data = pd.read_csv("diabetes.csv")
 
@@ -47,17 +49,25 @@ x_test = scaler.transform(x_test)
 # for i,j in zip(x_train[["Pregnancies"]].values, result):
 #     print("Before {} After {}".format(i,j))
 
+#Mô hình dự đoán dữ liệu
 cls = SVC()
 cls.fit(x_train,y_train)
-
+#-------------------------
 #test
 y_predict = cls.predict(x_test)
-for i,j in zip(y_test, y_predict):
-    print("Actual {} Predicted {}".format(i,j))
+# for i,j in zip(y_test, y_predict):
+#     print("Actual {} Predicted {}".format(i,j))
+#thong ke ti le du doan
+#print(classification_report(y_test, y_predict))
 
+#Bieu do thong ke gia tri thuc te - gia tri du doan
+cm = np.array(confusion_matrix(y_test, y_predict, labels=[0,1]))
+confusion = pd.DataFrame(cm, index=["Not Diabetic","Diabetic"], columns=["Not Diabetic","Diabetic"])
+sn.heatmap(confusion, annot=True, fmt="g")
+plt.savefig("diabetes_predictions")
 
-
-
+# Tối đa hoá việc sử dụng dữ liệu
+#K fold cross validation cv
 
 
 
